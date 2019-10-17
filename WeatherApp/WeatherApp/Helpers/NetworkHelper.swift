@@ -7,68 +7,58 @@
 //
 
 import Foundation
-
+enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+}
+enum AppError: Error {
+    case unauthenticated
+    case invalidJSONResponse
+    case couldNotParseJSON(rawError: Error)
+    case noInternetConnection
+    case badURL
+    case badStatusCode
+    case noDataReceived
+    case notAnImage
+    case other(rawError: Error)
+}
 class NetworkHelper {
     
+    static let manager = NetworkHelper()
     private init() {}
     
-    static let manager = NetworkHelper()
-    
-    func getData(urlString: String, completionHandler: @escaping(Result<Data, AppError>) -> ()) {
-        guard let url = URL(string: urlString) else {
-            completionHandler(.failure(.badUrl))
-            return
-        }
+    func performDataTask(withURL url: URL, andMethod httpMethod: HTTPMethod, completionHandler: @escaping((Result<Data, AppError>) -> Void)) {
         
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard error == nil else {
-                completionHandler(.failure(.networkError))
-                return
-            }
-            guard let data  = data else {
-                completionHandler(.failure(.noDataError))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else {
-                completionHandler(.failure(.badHTTPResponse))
-                return
-            }
-            
-            switch response.statusCode {
-            case 404:
-                completionHandler(.failure(.notFound))
-            case 403:
-                completionHandler(.failure(.unauthorized))
-            case 401:
-                completionHandler(.failure(.unauthorized))
-            case 200...299:
-                completionHandler(.success(data))
-            default:
-                completionHandler(.failure(.notFound))
-            }
-            }.resume()
-        
-    }
-    
-    let urlSession = URLSession(configuration: URLSessionConfiguration.default)
-
-    func performDataTask(with url: URL,
-                         completionHandler: @escaping ((Data) -> Void),
-                         errorHandler: @escaping ((Error) -> Void)) {
-        urlSession.dataTask(with: url){(data: Data?, response: URLResponse?, error: Error?) in
+        var request = URLRequest(url: url)
+        request.httpMethod = httpMethod.rawValue
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+      
+        urlSession.dataTask(with: request) { (data, response, error) in
             DispatchQueue.main.async {
                 guard let data = data else {
+                    completionHandler(.failure(.noDataReceived))
+                    return
+                }
+                guard let response = response as? HTTPURLResponse, (200...299) ~= response.statusCode else {
+                    completionHandler(.failure(.badStatusCode))
                     return
                 }
                 if let error = error {
-                    errorHandler(error)
+                    let error = error as NSError
+                    if error.domain == NSURLErrorDomain && error.code == NSURLErrorNotConnectedToInternet {
+                        completionHandler(.failure(.noInternetConnection))
+                        return
+                    } else {
+                        completionHandler(.failure(.other(rawError: error)))
+                        return
+                    }
                 }
-                completionHandler(data)
-                }
-            } .resume()
+                completionHandler(.success(data))
+            }
+        }.resume()
+       
+    
     }
-
     
-    
+        private let urlSession = URLSession(configuration: URLSessionConfiguration.default)
 }
