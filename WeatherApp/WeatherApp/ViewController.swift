@@ -25,13 +25,12 @@ class ViewController: UIViewController {
         }
     }
     
-    var weatherInformation = [WeatherResults](){
+    private var allWeather = [Forecast]() {
         didSet {
-            DispatchQueue.main.async {
-                self.daCollectionView.reloadData()
-            }
+            self.daCollectionView.reloadData()
         }
     }
+    
     public var isZipcode = true
     
     
@@ -85,7 +84,7 @@ class ViewController: UIViewController {
     
     
      private func loadData() {
-         let urlStr = WeatherAPIClient.getSearchResultsURLStr(from: latitude, longitude)
+        let urlStr = WeatherAPIClient.getSearchResultsURLStr(from: latitude, longitude: longitude)
          
          WeatherAPIClient.manager.getWeather(urlStr: urlStr) { (result) in
              DispatchQueue.main.async {

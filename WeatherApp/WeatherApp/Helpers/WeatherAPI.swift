@@ -23,7 +23,7 @@ class WeatherAPIClient {
             return
         }
         
-        NetworkManager.manager.performDataTask(withUrl: url, andMethod: .get) { (results) in
+        NetworkHelper.manager.performDataTask(withURL: url, andMethod: .get) { (results) in
             switch results {
             case .failure(let error):
                 completionHandler(.failure(error))
