@@ -1,52 +1,59 @@
+
 import Foundation
 
-struct WeatherResults : Codable {
-    let daily: WeatherWrapper
+struct Weather: Codable {
+    let daily: DailyWeatherResult
+    
+    static func decodeWeatherFromData(from jsonData: Data) throws -> Weather {
+        let response = try JSONDecoder().decode(Weather.self, from: jsonData)
+        return response
+    }
 }
-struct WeatherWrapper : Codable {
-    let data: [Weather]
+
+struct DailyWeatherResult: Codable {
+    let data: [Forecast]
 }
-struct Weather : Codable {
-    let icon: String
+
+struct Forecast: Codable {
+
+    private let time: Int
     let summary: String
-    let time: Int
-    let sunriseTime: Int
-    let sunsetTime: Int
+    let icon: String
     let temperatureHigh: Double
     let temperatureLow: Double
+    private let sunriseTime: Int
+    private let sunsetTime: Int
     let windSpeed: Double
     let precipProbability: Double
-    var precipitationChance: String {
-        get {
-            return "\(precipProbability * 100)%"
-        }
+    
+    var formattedDate: String {
+        let timeInterval = Date(timeIntervalSince1970: TimeInterval(time))
+        
+        let oldDateFormat = DateFormatter()
+        oldDateFormat.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        let newDateFormat = DateFormatter()
+        newDateFormat.dateFormat = "EEEE, MMM d, yyyy"
+        return newDateFormat.string(from: timeInterval)
     }
-    var date : String {
-        get {
-            let date = NSDate(timeIntervalSince1970: TimeInterval(time)) as Date
-            let df = DateFormatter()
-            df.dateFormat = "MMM-dd-yyyy"
-            return df.string(from:date)
-        }
+    
+    var formattedSunriseTime: String {
+        let timeInterval = Date(timeIntervalSince1970: TimeInterval(sunriseTime))
+        
+        let oldDateFormat = DateFormatter()
+        oldDateFormat.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        let newDateFormat = DateFormatter()
+        newDateFormat.dateFormat = "h:mm a"
+        return newDateFormat.string(from: timeInterval)
     }
-    var realSunRiseTime: String {
-        get {
-            let date = NSDate(timeIntervalSince1970: TimeInterval(sunriseTime)) as Date
-                       let df = DateFormatter()
-                       df.dateFormat = "hh:mm a"
-                       df.amSymbol = "AM"
-                       df.pmSymbol = "PM"
-                       return df.string(from:date)
-        }
+    
+    var formattedSunsetTime: String {
+        let timeInterval = Date(timeIntervalSince1970: TimeInterval(sunsetTime))
+        
+        let oldDateFormat = DateFormatter()
+        oldDateFormat.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        let newDateFormat = DateFormatter()
+        newDateFormat.dateFormat = "h:mm a"
+        return newDateFormat.string(from: timeInterval)
     }
-    var realSunSetTime: String {
-        get {
-            let date = NSDate(timeIntervalSince1970: TimeInterval(sunsetTime)) as Date
-                       let df = DateFormatter()
-                       df.dateFormat = "hh:mm a"
-                       df.amSymbol = "AM"
-                       df.pmSymbol = "PM"
-                       return df.string(from:date)
-        }
-    }
+    
 }

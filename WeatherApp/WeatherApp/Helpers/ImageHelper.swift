@@ -9,31 +9,37 @@
 import Foundation
 import UIKit
 
-class ImageAPIClient {
+class ImageHelper {
     
-    //Singleton
-    private init() {}
+    static let manager = ImageHelper()
     
-    static let manager = ImageAPIClient()
-    
-    func getImage(from urlStr: String, completionHandler: @escaping (UIImage) -> Void, errorHandler: @escaping (Error) -> Void) {
+    func getImage(urlStr: String, completionHandler: @escaping (Result<UIImage, AppError>) -> ()) {
         
-        //guard for URL not nil
         guard let url = URL(string: urlStr) else {
+            completionHandler(.failure(.badURL))
             return
         }
         
-        //Call completionHandler
-        let completion: (Data) -> Void = {(data: Data) in
-            guard let onlineImage = UIImage(data: data) else {
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            guard error == nil else {
+                completionHandler(.failure(.badURL))
                 return
             }
-            completionHandler(onlineImage) //call completionHandler
-        }
-        
-        //call NetworkHelper
-        NetworkHelper.manager.performDataTask(with: url,
-                                              completionHandler: completion,
-                                              errorHandler: errorHandler)
+            
+            guard let data = data else {
+                completionHandler(.failure(.noDataReceived))
+                return
+            }
+            
+            guard let image = UIImage(data: data) else {
+                completionHandler(.failure(.notAnImage))
+                return
+            }
+            
+            completionHandler(.success(image))
+        } .resume()
     }
+    
+    private init() {}
 }
+
