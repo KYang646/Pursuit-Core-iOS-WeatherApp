@@ -25,8 +25,8 @@ struct WeatherAPIClient {
         guard let url = URL(string: urlStr) else {return}
         let completion: (Data) -> Void = {(data: Data) in
             do {
-                let weatherData = try JSONDecoder().decode([WeatherModel].self, from: data)
-                completionHandler(weatherData)
+                let weatherData = try JSONDecoder().decode(WeatherResults.self, from: data)
+                completionHandler(weatherData.daily.data)
             } catch {
                 errorHandler(error)
             }

@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         }
     }
     
-    var weatherInformation = [PeriodsInformation](){
+    var weatherInformation = [WeatherResults](){
         didSet {
             DispatchQueue.main.async {
                 self.daCollectionView.reloadData()
@@ -32,9 +32,7 @@ class ViewController: UIViewController {
     
     
     @IBOutlet weak var welcomeLabel: UILabel!
-    
     @IBOutlet weak var daCollectionView: UICollectionView!
-    
     @IBOutlet weak var zipCodeTextField: UITextField!
     
     
@@ -47,18 +45,46 @@ class ViewController: UIViewController {
         
     }
 
-    func getData(){
-       
-        WeatherAPI.weatherInformation(zipCode: zipCode) { (error, data) in
-            if let error = error {
-                print("Error: \(error)")
-            } else if let weather = data {
-                self.weatherInformation = weather.response[0].periods
-                print(self.weatherInformation.count)
-                self.setCityName()
+    private var searchString: String? {
+        didSet {
+            loadLatLongFromZip()
+            self.weatherCollectionView.reloadData()
+            
+            if let searchString = searchString {
+                UserDefaultsWrapper.manager.store(searchString: searchString)
             }
         }
-        
+    }
+    
+    
+     private func loadData() {
+         let urlStr = WeatherAPIClient.getSearchResultsURLStr(from: latitude, longitude: longitude)
+         
+         WeatherAPIClient.manager.getWeather(urlStr: urlStr) { (result) in
+             DispatchQueue.main.async {
+                 switch result {
+                 case .failure(let error):
+                     print(error)
+                 case .success(let data):
+                     self.allWeather = data
+                 }
+             }
+         }
+     }
+     
+    
+    var searchTerm: String? = nil {
+        didSet {
+            guard let searchTerm = searchTerm else {return}
+            guard searchTerm != "" else {return}
+            let newURL = /*"http://api.tvmaze.com/search/shows?q=\(searchTerm.lowercased())"*/
+            loadData(url: newURL)
+            tableView.reloadData()
+        }
+    }
+    
+    func zipCode(_ searchTextField: UITextField, textDidChange searchText: String) {
+        searchTerm = zipCodeTextField.text
         
     }
 
