@@ -13,7 +13,7 @@ class WeatherAPIClient {
     static let manager = WeatherAPIClient()
     
     static func getSearchResultsURLStr(from latitude: String, longitude: String) -> String {
-        return "https://api.darksky.net/forecast/\(162593bfd27b6ae62ec0b7dbaaa429d6.darkSky)/\(latitude),\(longitude)?exclude=[minutely,hourly,alerts,flags]"
+        return "https://api.darksky.net/forecast/\(Secret.darkSky)/\(latitude),\(longitude)?exclude=[minutely,hourly,alerts,flags]"
     }
     
     func getWeather(urlStr: String, completionHandler: @escaping (Result<[Forecast], AppError>) -> ())  {

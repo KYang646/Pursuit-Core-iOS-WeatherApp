@@ -20,11 +20,11 @@
 		746A7DD52357A2BE0029FBE9 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746A7DD42357A2BE0029FBE9 /* WeatherAPI.swift */; };
 		746A7DD72357BC810029FBE9 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746A7DD62357BC810029FBE9 /* WeatherModel.swift */; };
 		746A7DDB2359003F0029FBE9 /* WeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746A7DD92359003F0029FBE9 /* WeatherCollectionViewCell.swift */; };
-		746A7DDC2359003F0029FBE9 /* WeatherCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 746A7DDA2359003F0029FBE9 /* WeatherCollectionViewCell.xib */; };
 		74F0FD09235F6871005682C9 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0FD08235F6871005682C9 /* UserDefaults.swift */; };
 		74F0FD0C235F689A005682C9 /* ImagePersistenceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0FD0B235F689A005682C9 /* ImagePersistenceHelper.swift */; };
 		74F0FD0E235F7D18005682C9 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0FD0D235F7D18005682C9 /* PersistenceManager.swift */; };
 		74F0FD10235F85C0005682C9 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0FD0F235F85C0005682C9 /* Image.swift */; };
+		74F0FD12235F8D44005682C9 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0FD11235F8D44005682C9 /* Secret.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,11 +55,11 @@
 		746A7DD42357A2BE0029FBE9 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		746A7DD62357BC810029FBE9 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		746A7DD92359003F0029FBE9 /* WeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCollectionViewCell.swift; sourceTree = "<group>"; };
-		746A7DDA2359003F0029FBE9 /* WeatherCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WeatherCollectionViewCell.xib; sourceTree = "<group>"; };
 		74F0FD08235F6871005682C9 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		74F0FD0B235F689A005682C9 /* ImagePersistenceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePersistenceHelper.swift; sourceTree = "<group>"; };
 		74F0FD0D235F7D18005682C9 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		74F0FD0F235F85C0005682C9 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		74F0FD11235F8D44005682C9 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,9 +106,9 @@
 				548CE053234D33B500B5177D /* SceneDelegate.swift */,
 				746A7DCD23577D5D0029FBE9 /* Helpers */,
 				548CE055234D33B500B5177D /* ViewController.swift */,
+				74F0FD11235F8D44005682C9 /* Secret.swift */,
 				74F0FD0A235F687D005682C9 /* Persistence */,
 				746A7DD92359003F0029FBE9 /* WeatherCollectionViewCell.swift */,
-				746A7DDA2359003F0029FBE9 /* WeatherCollectionViewCell.xib */,
 				548CE057234D33B500B5177D /* Main.storyboard */,
 				548CE05C234D33B600B5177D /* LaunchScreen.storyboard */,
 				548CE067234D340700B5177D /* Assets.xcassets */,
@@ -238,7 +238,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				548CE05E234D33B600B5177D /* LaunchScreen.storyboard in Resources */,
-				746A7DDC2359003F0029FBE9 /* WeatherCollectionViewCell.xib in Resources */,
 				548CE068234D340700B5177D /* Assets.xcassets in Resources */,
 				548CE059234D33B500B5177D /* Main.storyboard in Resources */,
 			);
@@ -259,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				746A7DDB2359003F0029FBE9 /* WeatherCollectionViewCell.swift in Sources */,
+				74F0FD12235F8D44005682C9 /* Secret.swift in Sources */,
 				548CE066234D33E600B5177D /* ZipCodeHelper.swift in Sources */,
 				548CE056234D33B500B5177D /* ViewController.swift in Sources */,
 				74F0FD0E235F7D18005682C9 /* PersistenceManager.swift in Sources */,

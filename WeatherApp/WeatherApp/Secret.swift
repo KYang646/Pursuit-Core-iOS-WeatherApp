@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+struct Secret {
+    static let darkSky = "162593bfd27b6ae62ec0b7dbaaa429d6"
+}
